@@ -1,0 +1,62 @@
+@import "../../assets/scss/autocomplete-custom/colors";
+
+.autocomplete {
+  width: 20rem;
+
+  .autocomplete-title {
+    text-align: center;
+    color: $primary-dark;
+  }
+
+  .autocomplete-block-input {
+    position: relative;
+
+    .autocomplete-input {
+      width: 100%;
+      border-radius: 6px;
+      border: 2px solid $secondary-dark;
+      background: $secondary-light;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      line-height: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .autocomplete-input_clear {
+      position: absolute;
+      right: 1rem;
+      top: calc(50% - 8px);;
+      color: $secondary-dark;
+      cursor: pointer;
+      line-height: 0;
+      font-size: 1.5rem;
+    }
+  }
+
+
+  .autocomplete-list {
+    list-style: none;
+    margin: 0;
+    width: 100%;
+    border: 2px solid $secondary-dark;
+    background-color: $secondary-light;
+    border-radius: 6px;
+    overflow-y: auto;
+    max-height: 15rem;
+
+    .autocomplete-list__item {
+      padding: 0.5rem;
+
+      &:hover {
+        background-color: $primary;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 250ms;
+      }
+    }
+  }
+}
+
+.autocomplete-active {
+  background-color: $primary !important;
+}
