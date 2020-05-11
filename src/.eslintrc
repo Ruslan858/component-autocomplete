@@ -1,0 +1,60 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "prettier"
+  ],
+  "settings": {
+    "import/extensions": [
+      ".js",
+      ".jsx"
+    ]
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "rules": {
+    "react/display-name": [2],
+    "react/prop-types": 0,
+    "jsx-quotes": [
+      1,
+      "prefer-double"
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "plugins": [
+    "react",
+    "prettier",
+    "react-hooks"
+  ],
+  "globals": {
+    "window": true,
+    "location": true,
+    "console": true,
+    "alert": true,
+    "fetch": true,
+    "async": true,
+    "await": true,
+    "document": true,
+    "map": true,
+    "Promise": true,
+    "React": true,
+    "Headers": true,
+    "Request": true,
+    "URL": true,
+    "process": true,
+    "setTimeout": true,
+    "localStorage": true,
+    "sessionStorage": true
+  },
+  "parser": "babel-eslint"
+}
