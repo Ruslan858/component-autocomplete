@@ -1,58 +1,69 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { fetchData } from '../services';
 import './Autocomplete.scss';
 
-class Autocomplete extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filteredSuggestion: [],
-      isActive: false,
-      inputSearch: '',
-      isShowSuggestion: false,
-    };
-  }
+class Autocomplete extends React.Component {
+  state = {
+    filteredSuggestion: [],
+    isActive: false,
+    inputSearch: '',
+    isShowSuggestion: false,
+    timeout_ID: null,
+  };
 
   filteringSuggestions = async str => {
-    return fetchData().getData(
-      `https://api.themoviedb.org/3/search/movie?api_key=08aaaa1b47117c8f992f62718220f428&language=en-US&query=${str}&page=1&include_adult=false`
-    );
+    return fetchData()
+      .getData(
+        `&query=${str}&page=1&include_adult=false`,
+      );
   };
+
+  debounceSuggestion = async (fn, delay, arg) => {
+    if (this.state.timeout_ID) {
+      clearTimeout(this.state.timeout_ID);
+    }
+
+    const timeout = setTimeout(async () => {
+      const movies = await fn(arg);
+      this.setState({ filteredSuggestion: movies.results });
+    }, delay);
+
+    await this.setState({ timeout_ID: timeout });
+  };
+
 
   handleChangeInput = async event => {
     event.persist();
-    const {
-      target: { value },
-    } = event;
-    await this.setState({ inputSearch: value });
-    await this.filteringSuggestions(value.toLowerCase()).then(movies => {
-      this.setState({ filteredSuggestion: movies.results });
-    });
+    const { debounceSuggestion, filteringSuggestions } = this;
+    const { target: { value } } = event;
+
+    this.setState({ inputSearch: value.toLowerCase() });
+    await debounceSuggestion(filteringSuggestions, 300, value.toLowerCase());
   };
 
   setValueSuggestion(e, name) {
     this.setState({ inputSearch: name, isShowSuggestion: false });
   }
 
-  onShowSuggestion = (isShow = false) => {
+  onShowSuggestion = async (isShow = false) => {
     const { inputSearch } = this.state;
-    this.filteringSuggestions(inputSearch).then(({ results }) => {
-      this.setState((state, props) => {
-        return {
-          ...state,
-          isShowSuggestion: isShow,
-          filteredSuggestion: results,
-          isActive: true,
-        };
-      });
+
+    const movies = await this.filteringSuggestions(inputSearch.toLowerCase());
+    this.setState((state, props) => {
+      return {
+        ...state,
+        isShowSuggestion: isShow,
+        filteredSuggestion: movies.results,
+        isActive: true,
+      };
     });
   };
 
-  onActive = active => {
+  onActive = isActive => {
     this.setState((prevState, props) => {
       return {
         ...prevState,
-        isActive: active,
+        isActive,
         isShowSuggestion: !!prevState.inputSearch.length,
       };
     });
@@ -104,16 +115,16 @@ class Autocomplete extends Component {
         {isShowSuggestion && (
           <div className="autocomplete-list">
             {filteredSuggestion && filteredSuggestion.length ? (
-              filteredSuggestion.map(sugg => {
+              filteredSuggestion.map(suggestion => {
                 return (
                   <div
-                    key={sugg.id}
+                    key={suggestion.id}
                     className="autocomplete-list__item"
                     onClick={e =>
-                      this.setValueSuggestion(e, sugg.original_title)
+                      this.setValueSuggestion(e, suggestion.original_title)
                     }
                   >
-                    {sugg.original_title}
+                    {suggestion.original_title}
                   </div>
                 );
               })
