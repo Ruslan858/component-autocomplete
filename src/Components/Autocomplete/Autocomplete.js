@@ -2,6 +2,8 @@ import React from 'react';
 import { fetchData } from '../services';
 import './Autocomplete.scss';
 
+import {ReactComponent as ClearTextSvg} from '../../assets/icon/svg/clearText.svg';
+
 class Autocomplete extends React.Component {
   state = {
     filteredSuggestion: [],
@@ -106,7 +108,7 @@ class Autocomplete extends React.Component {
               className="autocomplete-input_clear"
               onClick={this.clearInput}
             >
-              &#10799;
+              <ClearTextSvg className="autocomplete-input__btn"/>
             </span>
           ) : (
             ''
