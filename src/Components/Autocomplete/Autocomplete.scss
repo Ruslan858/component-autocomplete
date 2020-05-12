@@ -3,12 +3,12 @@
 .autocomplete {
   width: 20rem;
 
-  .autocomplete-title {
+  &-title {
     text-align: center;
     color: $primary-dark;
   }
 
-  .autocomplete-block-input {
+  &-block-input {
     position: relative;
 
     .autocomplete-input {
@@ -34,7 +34,7 @@
   }
 
 
-  .autocomplete-list {
+  &-list {
     list-style: none;
     margin: 0;
     width: 100%;
@@ -44,7 +44,7 @@
     overflow-y: auto;
     max-height: 15rem;
 
-    .autocomplete-list__item {
+    &__item {
       padding: 0.5rem;
 
       &:hover {
